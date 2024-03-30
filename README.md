@@ -6,7 +6,7 @@ This is intended to be used as a class library by a scoring platform to add a mo
 
 ## Getting Started
 
-1. Add a project reference to `PersonalBests.csproj`
+1. Add a project reference to `PersonalBests.Core.csproj`
 1. Implement `IScoreProvider` with a class that loads all historic records for a given club
 1. Create an instance of the `ReportGenerator` class, injecting your `IScoreProvider` implementation
 1. Call `ReportGenerator.Generate()` to calculate the report

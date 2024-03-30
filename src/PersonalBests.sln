@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalBests", "PersonalBests\PersonalBests.csproj", "{55E1D2D4-4A37-47DE-ABBA-3B6D7F42CAEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalBests", "PersonalBests.Core\PersonalBests.Core.csproj", "{55E1D2D4-4A37-47DE-ABBA-3B6D7F42CAEF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalBests.Tests", "PersonalBests.Tests\PersonalBests.Tests.csproj", "{3067E0D7-4B66-45E5-986E-AFDA9C00796A}"
 EndProject

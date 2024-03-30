@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PersonalBests\PersonalBests.csproj" />
+    <ProjectReference Include="..\PersonalBests.Core\PersonalBests.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
