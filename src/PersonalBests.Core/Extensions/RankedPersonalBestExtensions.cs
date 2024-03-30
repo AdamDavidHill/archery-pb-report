@@ -22,14 +22,14 @@ public static class RankedPersonalBestExtensions
                 Moved = i.Moved
             });
 
-    private static RankedPersonalBest? Match(this List<RankedPersonalBest> prev, RankedPersonalBest current)
+    public static RankedPersonalBest? Match(this List<RankedPersonalBest> prev, RankedPersonalBest current)
         => prev.FirstOrDefault(i => i.Category == current.Category && i.MemberName == current.MemberName);
 
-    private static DifferentialRankedPersonalBest CreateDifferential(this RankedPersonalBest current, RankedPersonalBest? prev)
+    public static DifferentialRankedPersonalBest CreateDifferential(this RankedPersonalBest current, RankedPersonalBest? prev)
         => new()
         {
             Category = current.Category,
-            HighestScore = current.HighestScore,
+            HighestScore = Math.Max(current.HighestScore, prev?.HighestScore ?? 0),
             MemberName = current.MemberName,
             Rank = current.Rank,
             RankType = current.RankType,
@@ -38,15 +38,15 @@ public static class RankedPersonalBestExtensions
             Moved = current.GetPositionsMoved(prev)
         };
 
-    private static ScoreStatus GetStatus(this RankedPersonalBest current, RankedPersonalBest? prev)
+    public static ScoreStatus GetStatus(this RankedPersonalBest current, RankedPersonalBest? prev)
         => (current, prev) switch
         {
             (_, null) => ScoreStatus.New,
-            { } when current.HighestScore == prev.HighestScore => ScoreStatus.Unchanged,
-            _ => ScoreStatus.Improved
+            { } when current.HighestScore > (prev?.HighestScore ?? 0) => ScoreStatus.Improved,
+            _ => ScoreStatus.Unchanged
         };
 
-    private static RankingMovement GetRankingMovement(this RankedPersonalBest current, RankedPersonalBest? prev)
+    public static RankingMovement GetRankingMovement(this RankedPersonalBest current, RankedPersonalBest? prev)
         => (current, prev) switch
         {
             (_, null) => RankingMovement.New,
@@ -55,7 +55,7 @@ public static class RankedPersonalBestExtensions
             _ => RankingMovement.Static
         };
 
-    private static int GetPositionsMoved(this RankedPersonalBest current, RankedPersonalBest? prev)
+    public static int GetPositionsMoved(this RankedPersonalBest current, RankedPersonalBest? prev)
         => (current, prev) switch
         {
             (_, null) => 0,
