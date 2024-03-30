@@ -5,11 +5,8 @@ using System.Text;
 
 namespace PersonalBests.Extensions;
 
-public static class IEnumerableExtensions
+public static partial class IEnumerableExtensions
 {
-    public static List<TResult> Aggregate<TSource, TResult>(this IEnumerable<TSource> source, Func<List<TResult>, TSource, List<TResult>> func)
-        => source.Aggregate(new List<TResult>(), (acc, current) => func(acc, current));
-
     public static async Task ToCsvFile<T>(this IEnumerable<T> source, string filePath)
     {
         using var writer = new StreamWriter(filePath, append: false, Encoding.UTF8);
