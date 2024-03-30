@@ -18,7 +18,7 @@ public partial class IEnumerableExtensionsTests
             {
                 acc.Add(acc.Any()
                     ? acc.Last() + current
-                    : current;
+                    : current);
     
                 return acc;
             });
