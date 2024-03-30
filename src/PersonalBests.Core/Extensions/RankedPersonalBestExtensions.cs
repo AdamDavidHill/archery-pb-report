@@ -15,11 +15,11 @@ public static class RankedPersonalBestExtensions
                 AgeGroup = i.Category.AgeGroup,
                 Rank = i.Rank,
                 HighestScore = i.HighestScore,
-                MemberName = i.MemberName,
+                Name = i.MemberName,
                 RankType = i.RankType,
                 Status = i.Status,
-                RankingMovement = i.RankingMovement,
-                PositionsMoved = i.PositionsMoved
+                Movement = i.Movement,
+                Moved = i.Moved
             });
 
     private static RankedPersonalBest? Match(this List<RankedPersonalBest> prev, RankedPersonalBest current)
@@ -34,8 +34,8 @@ public static class RankedPersonalBestExtensions
             Rank = current.Rank,
             RankType = current.RankType,
             Status = current.GetStatus(prev),
-            RankingMovement = current.GetRankingMovement(prev),
-            PositionsMoved = current.GetPositionsMoved(prev)
+            Movement = current.GetRankingMovement(prev),
+            Moved = current.GetPositionsMoved(prev)
         };
 
     private static ScoreStatus GetStatus(this RankedPersonalBest current, RankedPersonalBest? prev)
@@ -50,8 +50,8 @@ public static class RankedPersonalBestExtensions
         => (current, prev) switch
         {
             (_, null) => RankingMovement.New,
-            { } when current.Rank > prev.Rank => RankingMovement.Up,
-            { } when current.Rank < prev.Rank => RankingMovement.Down,
+            { } when current.Rank > prev.Rank => RankingMovement.Down, // Unintuitive, reversed because 4 to 1 means Up
+            { } when current.Rank < prev.Rank => RankingMovement.Up,   // Unintuitive, reversed because 4 to 1 means Up
             _ => RankingMovement.Static
         };
 

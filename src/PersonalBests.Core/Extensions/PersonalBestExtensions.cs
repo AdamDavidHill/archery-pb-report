@@ -18,39 +18,39 @@ public static class PersonalBestExtensions
            select categories.ToRankedPersonalBests();
 
     private static List<RankedPersonalBest> ToRankedPersonalBests(this IEnumerable<PersonalBest> scores)
-        => scores
+    {
+        var indexedScores = scores
             .OrderByDescending(i => i.HighestScore)
             .Index()
-            .Aggregate<IndexedScore, RankedPersonalBest>((acc, current) =>
-            {
-                acc.Add(new()
-                {
-                    Category = current.Score.Category,
-                    HighestScore = current.Score.HighestScore,
-                    MemberName = current.Score.MemberName,
-                    Rank = acc.GetRank(current),
-                    RankType = acc.GetRankType(current)
-                });
+            .ToList(); // Materialized to enable forward-looking
 
-                return acc;
-            });
+        return indexedScores
+            .Select((current, index) => new RankedPersonalBest
+            {
+                Category = current.Score.Category,
+                HighestScore = current.Score.HighestScore,
+                MemberName = current.Score.MemberName,
+                Rank = indexedScores.GetRank(current, index),
+                RankType = indexedScores.GetRankType(current, index)
+            }).ToList();
+    }
 
     private static IEnumerable<IndexedScore> Index(this IEnumerable<PersonalBest> source)
         => source.Select((score, index) => (ZeroBasedIndex: index, Score: score));
 
-    private static int GetRank(this List<RankedPersonalBest> acc, IndexedScore current)
-        => acc.IsNextRankDown(current)
+    private static int GetRank(this List<IndexedScore> indexedScores, IndexedScore current, int index)
+        => indexedScores.IsNextRankDown(current, index)
                 ? current.ZeroBasedIndex + 1
-                : acc.Last().Rank;
+                : indexedScores[index - 1 < 0 ? 0 : index - 1].ZeroBasedIndex + 1;
 
-    private static bool IsNextRankDown(this List<RankedPersonalBest> acc, IndexedScore current)
-        => acc.Count == 0 || acc.Last().HighestScore != current.Score.HighestScore;
+    private static bool IsNextRankDown(this List<IndexedScore> indexedScores, IndexedScore current, int index)
+        => index == 0 || indexedScores[index - 1].Score.HighestScore != current.Score.HighestScore;
 
-    private static RankType GetRankType(this List<RankedPersonalBest> acc, IndexedScore current)
-        => acc.IsJointPlace(current)
-            ? RankType.Joint
-            : RankType.Exclusive;
+    private static RankType GetRankType(this List<IndexedScore> indexedScores, IndexedScore current, int index)
+    {
+        bool isPreviousSame = index > 0 && indexedScores[index - 1].Score.HighestScore == current.Score.HighestScore;
+        bool isNextSame = index < indexedScores.Count - 1 && indexedScores[index + 1].Score.HighestScore == current.Score.HighestScore;
 
-    private static bool IsJointPlace(this List<RankedPersonalBest> acc, IndexedScore current)
-        => acc.Any() && acc.Last().HighestScore == current.Score.HighestScore;
+        return isPreviousSame || isNextSame ? RankType.Joint : RankType.Exclusive;
+    }
 }

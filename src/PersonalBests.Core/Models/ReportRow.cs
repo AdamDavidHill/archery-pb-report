@@ -9,9 +9,9 @@ public record ReportRow
     public string? AgeGroup { get; init; } // e.g. Men 50+
     public int Rank { get; init; } // e.g. 7
     public int HighestScore { get; init; } // e.g. 555
-    public string MemberName { get; init; } = string.Empty; // e.g. Bob Smith
+    public string Name { get; init; } = string.Empty; // e.g. Bob Smith
     public RankType RankType { get; init; } // e.g. Joint
     public ScoreStatus Status { get; init; } // e.g. Improved
-    public RankingMovement RankingMovement { get; init; } // e.g. Up
-    public int PositionsMoved { get; init; } // e.g. -3
+    public RankingMovement Movement { get; init; } // e.g. Up
+    public int Moved { get; init; } // e.g. -3
 }
