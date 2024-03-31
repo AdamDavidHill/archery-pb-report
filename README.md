@@ -10,3 +10,21 @@ This is intended to be used as a class library by a scoring platform to add a mo
 1. Implement `IScoreProvider` with a class that loads all historic records for a given club
 1. Create an instance of the `ReportGenerator` class, injecting your `IScoreProvider` implementation
 1. Call `ReportGenerator.Generate()` to calculate the report
+
+## Using the Client
+
+An example console application, PersonalBests.Client, can be used to call the Golden Records API, map the data, and produce a report.
+
+### Environment Variables
+
+To use, you need an environment variable name `GoldenRecords__ApiKey` with your API key as the value.
+
+e.g.
+
+```
+GoldenRecords__ApiKey=X w4VGmVScKoNVKpiwsTWopwyxHBgEw15h2SN2ewcLTRfdalRhk7tps5ePVElbmIQFFESHY...
+```
+
+### Output
+
+For the moment this client just writes a text file called "test.csv" into the exexucting directory.

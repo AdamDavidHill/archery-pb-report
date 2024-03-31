@@ -4,5 +4,5 @@ namespace PersonalBests.Interfaces;
 
 public interface IScoreProvider
 {
-    List<ScoreRecord> GetAllHistoricScores();
+    Task<List<ScoreRecord>> GetAllHistoricScores();
 }

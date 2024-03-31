@@ -12,9 +12,8 @@ public class PersonalBestTests
     private ReportGenerator CreateReportGenerator(List<ScoreRecord> dataToProvide) => new ReportGenerator(new MockScoreProvider(dataToProvide));
 
     [Fact]
-    public void TotalCountAsExpected()
-        => CreateReportGenerator(Data.AllScores)
-            .Generate()
+    public async Task TotalCountAsExpected()
+        => (await CreateReportGenerator(Data.AllScores).Generate())
             .Count()
             .Should()
             .Be(16);
@@ -23,13 +22,13 @@ public class PersonalBestTests
     public async Task CsvFileProduced()
     {
         var path = Path.Combine(Directory.GetCurrentDirectory(), "test.csv");
-        
+
         if (File.Exists(path))
         {
             File.Delete(path);
         }
 
-        var data = CreateReportGenerator(Data.AllScores).Generate();
+        var data = await CreateReportGenerator(Data.AllScores).Generate();
         await data.ToCsvFile(path);
         File.Exists(path).Should().BeTrue();
         File.Delete(path);
