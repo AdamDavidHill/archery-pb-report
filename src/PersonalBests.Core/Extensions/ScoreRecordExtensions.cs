@@ -27,4 +27,11 @@ public static class ScoreRecordExtensions
             Class = score.Class,
             AgeGroup = score.AgeGroup
         };
+
+    public static ScoreRecord DataCleansed(this ScoreRecord score)
+        => score with
+        {
+            AgeGroup = score.AgeGroup.SimplifiedAgeGroup(),
+            Round = score.Round.SimplifiedRound(),
+        };
 }

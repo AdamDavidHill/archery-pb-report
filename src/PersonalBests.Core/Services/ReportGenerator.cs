@@ -22,8 +22,9 @@ public class ReportGenerator(IScoreProvider _scoreProvider) : IReportGenerator
     public async Task<List<ReportRow>> Generate(DateTime toDate, DateTime prevToDate)
     {
         var allScores = await _scoreProvider.GetAllHistoricScores();
-        var pbOld = allScores.Where(i => i.Date < prevToDate).ToPersonalBests();
-        var pbNew = allScores.Where(i => i.Date < toDate).ToPersonalBests();
+        var simplifiedAgeGroupScores = allScores.Select(i => i.DataCleansed());
+        var pbOld = simplifiedAgeGroupScores.Where(i => i.Date < prevToDate).ToPersonalBests();
+        var pbNew = simplifiedAgeGroupScores.Where(i => i.Date < toDate).ToPersonalBests();
         var rankedOld = pbOld.ToCategorizedRankedPersonalBests();
         var rankedNew = pbNew.ToCategorizedRankedPersonalBests();
         var differential = rankedNew.Differential(rankedOld);

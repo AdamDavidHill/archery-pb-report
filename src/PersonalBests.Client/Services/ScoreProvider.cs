@@ -17,24 +17,41 @@ public class ScoreProvider(IOptions<GoldenRecordsOptions> _config, IHttpClientFa
         var httpClient = _httpClientFactory.CreateClient(nameof(ScoreProvider));
         var apiKeyParts = _config.Value.ApiKey!.Split(' ');
         httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(apiKeyParts.First(), apiKeyParts.Last());
-        var url = GetUrl(1);
-        var response = await httpClient.GetAsync(url);
 
-        if (response.IsSuccessStatusCode)
+        var results = new List<List<ApiScoreRecord>>();
+        int page = 1;
+
+        while (true)
         {
+            var url = GetUrl(page);
+            var response = await httpClient.GetAsync(url);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                break;
+            }
+
             var contents = await response.Content.ReadAsStringAsync();
 
-            return JsonSerializer.Deserialize<List<ApiScoreRecord>>(contents, new JsonSerializerOptions
+            if (string.IsNullOrEmpty(contents) || contents == "null")
+            {
+                break;
+            }
+
+            var data = JsonSerializer.Deserialize<List<ApiScoreRecord>>(contents, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
-            })?
-                .Where(HasNoKeyFieldNulls)
-                .Select(Map)
-                .ToList()
-                ?? [];
+            });
+
+            if (data?.Any() ?? false)
+            {
+                results.Add(data);
+            }
+
+            page++;
         }
 
-        return [];
+        return results.SelectMany(i => i).Where(HasNoKeyFieldNulls).Select(Map).ToList();
     }
 
     private static string GetUrl(int page)
@@ -43,7 +60,7 @@ public class ScoreProvider(IOptions<GoldenRecordsOptions> _config, IHttpClientFa
         var builder = new UriBuilder(url);
         //builder.Port = -1;
         var query = HttpUtility.ParseQueryString(builder.Query);
-        query["page"] = page.ToString();
+        query["pageNumber"] = page.ToString();
         query["pageSize"] = "1000";
         builder.Query = query.ToString();
 
