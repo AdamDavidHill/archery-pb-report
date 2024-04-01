@@ -34,7 +34,7 @@ public static class Program
         var report = await reportGenerator.Generate();
         var reformatted = report.Select(i => i.ToCsvOutputRow());
 
-        var path = Path.Combine(Directory.GetCurrentDirectory(), "test.csv");
+        var path = Path.Combine(Directory.GetCurrentDirectory(), $"report-{DateTime.UtcNow.ToString("yyyyMMdd")}.csv");
 
         if (File.Exists(path))
         {
