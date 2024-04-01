@@ -32,6 +32,7 @@ public static class Program
             .Build();
         var reportGenerator = host.Services.GetRequiredService<IReportGenerator>()!;
         var report = await reportGenerator.Generate();
+        var reformatted = report.Select(i => i.ToCsvOutputRow());
 
         var path = Path.Combine(Directory.GetCurrentDirectory(), "test.csv");
 
@@ -40,6 +41,6 @@ public static class Program
             File.Delete(path);
         }
 
-        await report.ToCsvFile(path);
+        await reformatted.ToCsvFile(path);
     }
 }
