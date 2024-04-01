@@ -9,10 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalBests.Tests", "Pers
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{38E16409-F1B6-48BA-9BCB-67F413385B23}"
 	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\publish.yaml = ..\.github\workflows\publish.yaml
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PersonalBests.Client", "PersonalBests.Client\PersonalBests.Client.csproj", "{1B924A4F-B73B-4F87-84FA-1BAD0C1EE871}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PersonalBests.Client", "PersonalBests.Client\PersonalBests.Client.csproj", "{1B924A4F-B73B-4F87-84FA-1BAD0C1EE871}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
