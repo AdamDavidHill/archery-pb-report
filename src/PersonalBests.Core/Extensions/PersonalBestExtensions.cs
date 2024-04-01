@@ -46,13 +46,6 @@ public static class PersonalBestExtensions
     public static bool IsNextRankDown(this List<IndexedScore> indexedScores, IndexedScore current, int index)
         => index == 0 || indexedScores[index - 1].Score.HighestScore != current.Score.HighestScore;
 
-    /*public static RankType GetRankType(this List<IndexedScore> indexedScores, IndexedScore current, int index)
-    {
-        bool isPreviousSame = index > 0 && indexedScores[index - 1].Score.HighestScore == current.Score.HighestScore;
-        bool isNextSame = index < indexedScores.Count - 1 && indexedScores[index + 1].Score.HighestScore == current.Score.HighestScore;
-
-        return isPreviousSame || isNextSame ? RankType.Joint : RankType.Exclusive;
-    }*/
     public static RankType GetRankType(this List<IndexedScore> indexedScores, IndexedScore current, int index)
     {
         bool isPreviousSame = index > 0 && indexedScores[index - 1].Score.HighestScore == current.Score.HighestScore;
