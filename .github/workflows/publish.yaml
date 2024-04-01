@@ -1,4 +1,4 @@
-name: Publish client
+name: .NET 8 CI/CD
 
 on:
   push:
@@ -9,12 +9,13 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  build-and-publish:
     runs-on: windows-latest
+
     steps:
     - uses: actions/checkout@v2
     
-    - name: Setup .NET Core
+    - name: Setup .NET 8
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: '8.x'
@@ -32,10 +33,13 @@ jobs:
       run: dotnet publish src/PersonalBests.Client/PersonalBests.Client.csproj -c Release -o publish
     
     - name: Zip the published app
+      run: Compress-Archive -Path publish/* -DestinationPath publish.zip
+    
+    - name: Upload build artifact
       uses: actions/upload-artifact@v2
       with:
         name: published-app
-        path: src/PersonalBests.Client/publish/**
+        path: publish.zip
     
     - name: Create Release
       id: create_release
@@ -43,7 +47,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.run_number }}
+        tag_name: release-${{ github.run_number }}
         release_name: Release ${{ github.run_number }}
         draft: false
         prerelease: false
@@ -54,6 +58,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./src/PersonalBests.Client/publish.zip
+        asset_path: ./publish.zip
         asset_name: PersonalBests.Client.zip
         asset_content_type: application/zip
