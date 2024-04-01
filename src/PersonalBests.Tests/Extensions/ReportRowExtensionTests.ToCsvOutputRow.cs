@@ -31,7 +31,7 @@ public partial class ReportRowExtensionsTests
             Name = "John Doe",
             Score = 525,
             Improved = true,
-            Move = "1"
+            Move = "↑1"
         };
 
         var csvOutputRow = reportRow.ToCsvOutputRow();
