@@ -27,4 +27,4 @@ GoldenRecords__ApiKey=X w4VGmVScKoNVKpiwsTWopwyxHBgEw15h2SN2ewcLTRfdalRhk7tps5eP
 
 ### Output
 
-For the moment this client just writes a text file called "test.csv" into the exexucting directory.
+For the moment this client just writes a text file called "test.csv" into the executing directory.
