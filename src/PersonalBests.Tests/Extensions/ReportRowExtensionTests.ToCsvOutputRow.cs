@@ -27,7 +27,7 @@ public partial class ReportRowExtensionsTests
         var expectedCsvOutputRow = new CsvOutputRow
         {
             Category = "Men 50+ - Compound - Portsmouth",
-            Position = "1==",
+            Position = "1=",
             Name = "John Doe",
             Score = 525,
             Improved = true,
