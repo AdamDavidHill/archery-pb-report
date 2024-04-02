@@ -9,7 +9,7 @@ public static class ReportRowExtensions
         => new()
         {
             Category = input.AgeGroup + " - " + input.Class + " - " + input.Round,
-            Position = input.Rank.ToString() + (input.RankType == Enums.RankType.Exclusive ? string.Empty : "=="),
+            Position = input.Rank.ToString() + (input.RankType == Enums.RankType.Exclusive ? string.Empty : "="),
             Name = input.Name,
             Score = input.HighestScore,
             Improved = input.Status != Enums.ScoreStatus.Unchanged,
