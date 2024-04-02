@@ -42,5 +42,7 @@ public static class Program
         }
 
         await reformatted.ToCsvFile(path);
+        Console.WriteLine("File written. Press any key to exit.");
+        Console.ReadLine();
     }
 }
