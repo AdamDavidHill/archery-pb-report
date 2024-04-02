@@ -28,3 +28,7 @@ GoldenRecords__ApiKey=X w4VGmVScKoNVKpiwsTWopwyxHBgEw15h2SN2ewcLTRfdalRhk7tps5eP
 ### Output
 
 For the moment this client just writes a text file called "test.csv" into the executing directory.
+
+### .Net Runtime
+
+To run the client you will need the [.Net 8 Runtime](https://dotnet.microsoft.com/en-us/download/dotnet/8.0).
