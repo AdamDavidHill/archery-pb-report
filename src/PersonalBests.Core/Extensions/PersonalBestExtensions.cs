@@ -19,24 +19,31 @@ public static class PersonalBestExtensions
 
     public static List<RankedPersonalBest> ToRankedPersonalBests(this IEnumerable<PersonalBest> scores)
     {
-        var indexedScores = scores
-            .OrderByDescending(i => i.HighestScore)
-            .Index()
-            .ToList(); // Materialized to enable forward-looking
+        var indexedScores = scores.OrderByDescending(i => i.HighestScore).Index().ToList();
+        int lastUniqueScore = int.MinValue;
+        int lastRankAssigned = 0;
 
-        return indexedScores
-            .Select((current, index) => new RankedPersonalBest
+        return indexedScores.Select((current, index) =>
+        {
+            if (current.Score.HighestScore != lastUniqueScore)
+            {
+                lastUniqueScore = current.Score.HighestScore;
+                lastRankAssigned = index + 1;
+            }
+
+            return new RankedPersonalBest
             {
                 Category = current.Score.Category,
                 HighestScore = current.Score.HighestScore,
                 MemberName = current.Score.MemberName,
-                Rank = indexedScores.GetRank(current, index),
+                Rank = lastRankAssigned,
                 RankType = indexedScores.GetRankType(current, index)
-            }).ToList();
+            };
+        }).ToList();
     }
 
     public static IEnumerable<IndexedScore> Index(this IEnumerable<PersonalBest> source)
-        => source.Select((score, index) => (ZeroBasedIndex: index, Score: score));
+    => source.Select((score, index) => (ZeroBasedIndex: index, Score: score));
 
     public static int GetRank(this List<IndexedScore> indexedScores, IndexedScore current, int index)
         => indexedScores.IsNextRankDown(current, index)
