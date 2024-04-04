@@ -32,7 +32,12 @@ public static class Program
             .Build();
         var reportGenerator = host.Services.GetRequiredService<IReportGenerator>()!;
         var report = await reportGenerator.Generate();
-        var reformatted = report.Select(i => i.ToCsvOutputRow());
+        var reformatted = report
+            .Select(i => i.ToCsvOutputRow())
+            .OrderBy(row => row.Category)
+            .ThenBy(row => row.Position)
+            .ThenBy(row => row.Surname())
+            .ToList();
 
         var path = Path.Combine(Directory.GetCurrentDirectory(), $"report-{DateTime.UtcNow.ToString("yyyyMMdd")}.csv");
 
