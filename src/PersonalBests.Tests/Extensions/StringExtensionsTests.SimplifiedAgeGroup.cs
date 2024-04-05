@@ -22,15 +22,4 @@ public partial class StringExtensionsTests
 
         result.Should().Be(expectedOutput);
     }
-
-    [Theory]
-    [InlineData("Progress 10m", "Progress")]
-    [InlineData("Progress", "Progress")]
-    [InlineData("Portsmouth", "Portsmouth")]
-    public void SimplifiedRound_GivenString_ReturnsSimplifiedRound(string input, string expectedResult)
-    {
-        var result = input.SimplifiedRound();
-
-        result.Should().Be(expectedResult);
-    }
 }

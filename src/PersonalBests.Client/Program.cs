@@ -35,7 +35,7 @@ public static class Program
         var reformatted = report
             .Select(i => i.ToCsvOutputRow())
             .OrderBy(row => row.Category)
-            .ThenBy(row => row.Position)
+            .ThenBy(row => row.Position.NumericValue())
             .ThenBy(row => row.Surname())
             .ToList();
 

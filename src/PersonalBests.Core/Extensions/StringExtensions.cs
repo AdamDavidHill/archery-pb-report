@@ -17,4 +17,7 @@ public static class StringExtensions
             string a when a.Contains("PROGRESS") => "Progress",
             _ => input,
         };
+
+    public static int NumericValue(this string input)
+        => int.Parse("0" + new string(input.Where(c => char.IsDigit(c)).ToArray()));
 }
